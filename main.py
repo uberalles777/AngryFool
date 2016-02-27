@@ -8,6 +8,7 @@ suits = ["D", "C", "H", "S"]
 players = 2
 
 
+#Class for playng card
 class Card(object):
     def __init__(self, rank, suit):
          self.rank = rank
@@ -19,7 +20,7 @@ class Card(object):
     def get_suit(self):
         return self.suit
 
-
+#Class for player
 class Hand(object):
     def __init__(self, name):
         self.name = name
@@ -37,7 +38,7 @@ class Hand(object):
     def get_hand_len(self):
         return len(self.cards)
 
-
+#Class for playng deck. It contains the playing cards and two trumps.
 class Deck(object):
     def __init__(self):
         self.cards = [Card(r, s) for r in ranks for s in suits]
@@ -62,10 +63,11 @@ class Deck(object):
     def get_deck_len(self):
         return len(self.cards)
 
-
+#Class for playng table.
 class Table(object):
     def __init__(self):
         self.table = []
+        self.input_table = []
 
     def add_card(self, card):
         self.table.append(card)
@@ -73,7 +75,13 @@ class Table(object):
     def get_table(self):
         return self.table
 
+    def bit_card(self):
+        print("foo function. needed to write it later")
 
+    def clear_table(self):
+        self.table.clear()
+
+#Main game function. Provides gameplay.
 def new_game():
     deck = Deck()
     table = Table()
