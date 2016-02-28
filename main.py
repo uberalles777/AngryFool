@@ -12,7 +12,9 @@ def print_rule(rule):
     rulelib = {
         1:"The first move is to do one card or several cards peers.",
         2:"Spades is not trump. Spades hit only spades.",
-        3:"The card can only beat by senior in rank suited cards or any trump."
+        3:"The card can only beat by senior in rank suited cards or any trump.",
+        4:"Hidden trump is spades, spades can't be trump. Trump has remained the same",
+        5:"Trump has remained the same."
     }
     print(rulelib.get(rule))
 
@@ -112,8 +114,20 @@ def new_game():
     player_hand2 = Hand("Player2")
 
     def fill_hand(player):
+        global current_trump
         while player.get_hand_len() <= 5:
             player.add_card(deck.deal_card())
+            if deck.get_deck_len() == 0:
+                if deck.get_hidden_trump().get_suit() == "S":
+                    print_rule(4)
+                    break
+                elif deck.get_hidden_trump().get_suit() == current_trump:
+                    print_rule(5)
+                    break
+                else:
+                    current_trump = deck.get_hidden_trump().get_suit()
+                    print("Trump is changed. Current trump is %s" % current_trump)
+                    break
 
     def get_handset(player):
         handset = [(s.get_rank(), s.get_suit()) for s in player.show_cards()]
@@ -126,7 +140,7 @@ def new_game():
     print("Current trump is %s" % current_trump)
     print("Your handset is %s" % get_handset(player_hand1))
 
-    answer = input("select card")
+    answer = input("select card \n")
     if answer.isdigit():
         answer = int(answer)
 #        print(handset1[answer])
@@ -136,6 +150,8 @@ def new_game():
         print(player_hand1.get_hand_len())
         print(table.get_table())
         print(deck.get_deck_len())
+    else:
+        print("Select card by digit")
 
 
 
