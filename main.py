@@ -5,7 +5,16 @@ import random
 
 ranks = range(6, 15)
 suits = ["D", "C", "H", "S"]
+current_trump = ""
 players = 2
+
+def print_rule(rule):
+    rulelib = {
+        1:"The first move is to do one card or several cards peers.",
+        2:"Spades is not trump. Spades hit only spades.",
+        3:"The card can only beat by senior in rank suited cards or any trump."
+    }
+    print(rulelib.get(rule))
 
 
 #Class for playng card
@@ -40,6 +49,7 @@ class Hand(object):
 
 #Class for playng deck. It contains the playing cards and two trumps.
 class Deck(object):
+
     def __init__(self):
         self.cards = [Card(r, s) for r in ranks for s in suits]
         random.shuffle(self.cards)
@@ -68,6 +78,7 @@ class Table(object):
     def __init__(self):
         self.table = []
         self.input_table = []
+        self.hited = []
 
     def add_card(self, card):
         self.table.append(card)
@@ -76,14 +87,26 @@ class Table(object):
         return self.table
 
     def bit_card(self):
-        print("foo function. needed to write it later")
+        for sf in self.table:
+            for it in self.input_table:
+                if sf.get_rank() > it.get_rank() or sf.get_suit() != it.get_suit():
+                    print_rule(3)
+                elif sf.get_suit() != 'S' and it.get_suit() == 'S':
+                    print_rule(2)
+                elif sf.get_suit() == 'S' and it.get_suit() != 'S':
+                    print_rule(2)
+                elif sf.get_rank() < it.get_rank() and sf.get_suit() == it.get_suit() or sf.get_suit() == current_trump:
+                    self.hited.append(self.table.pop(0))
+                    self.hited.append(self.input_table.pop(0))
 
     def clear_table(self):
         self.table.clear()
 
 #Main game function. Provides gameplay.
 def new_game():
+    global current_trump
     deck = Deck()
+    current_trump = deck.get_trump().get_suit()
     table = Table()
     player_hand1 = Hand("Player1")
     player_hand2 = Hand("Player2")
@@ -100,11 +123,8 @@ def new_game():
     fill_hand(player_hand1)
     fill_hand(player_hand2)
 
-#    print(player_hand1.show_cards())
-
-    handset1 = get_handset(player_hand1)
-    turn_set = []
-
+    print("Current trump is %s" % current_trump)
+    print("Your handset is %s" % get_handset(player_hand1))
 
     answer = input("select card")
     if answer.isdigit():
