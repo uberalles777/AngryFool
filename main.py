@@ -6,7 +6,8 @@ import random
 ranks = range(6, 15)
 suits = ["D", "C", "H", "S"]
 current_trump = ""
-players = ["Player1", "Player2", "Player3"]
+playernames = ["Player1", "Player2", "Player3"]
+players = []
 
 rulelib = {
         1:"The first move is to do one card or several cards peers.",
@@ -112,12 +113,9 @@ def new_game():
     deck = Deck()
     current_trump = deck.get_trump().get_suit()
     table = Table()
-    player_hand1 = Hand("Player1")
-    player_hand2 = Hand("Player2")
-    player_hand3 = Hand("Player3")
-    player_hand4 = Hand("Player4")
-    player_hand5 = Hand("Player5")
-    player_hand6 = Hand("Player6")
+
+    for h in playernames:
+        players.append(Hand(h))
 
     def fill_hand(player):
         global current_trump
@@ -142,34 +140,44 @@ def new_game():
 
     print("Current trump is %s" % current_trump)
 
-    fill_hand(player_hand1)
-    print("%s  handset is %s" % (player_hand1.show_name(), get_handset(player_hand1)))
-    fill_hand(player_hand2)
-    print("%s  handset is %s" % (player_hand2.show_name(), get_handset(player_hand2)))
-    fill_hand(player_hand3)
-    print("%s  handset is %s" % (player_hand3.show_name(), get_handset(player_hand3)))
-    fill_hand(player_hand4)
-    print("%s  handset is %s" % (player_hand4.show_name(), get_handset(player_hand4)))
-    fill_hand(player_hand5)
-    print("%s  handset is %s" % (player_hand5.show_name(), get_handset(player_hand5)))
-    fill_hand(player_hand6)
-    print("%s  handset is %s" % (player_hand6.show_name(), get_handset(player_hand6)))
+    for ghs in players:
+        fill_hand(ghs)
+        print(get_handset(ghs))
 
-    print("Current trump is %s" % current_trump)
-    print("Your handset is %s" % get_handset(player_hand1))
 
-    answer = input("select card \n")
-    if answer.isdigit():
-        answer = int(answer)
-#        print(handset1[answer])
-        selected_card = player_hand1.show_cards()[answer]
-        print(selected_card)
-        table.add_card(player_hand1.pop_card(answer), "add")
-        print(player_hand1.get_hand_len())
-        print(table.get_table())
-        print(deck.get_deck_len())
-    else:
-        print("Select card by digit")
+
+
+
+
+
+    # fill_hand(player_hand1)
+    # print("%s  handset is %s" % (player_hand1.show_name(), get_handset(player_hand1)))
+    # fill_hand(player_hand2)
+    # print("%s  handset is %s" % (player_hand2.show_name(), get_handset(player_hand2)))
+    # fill_hand(player_hand3)
+    # print("%s  handset is %s" % (player_hand3.show_name(), get_handset(player_hand3)))
+    # fill_hand(player_hand4)
+    # print("%s  handset is %s" % (player_hand4.show_name(), get_handset(player_hand4)))
+    # fill_hand(player_hand5)
+    # print("%s  handset is %s" % (player_hand5.show_name(), get_handset(player_hand5)))
+    # fill_hand(player_hand6)
+    # print("%s  handset is %s" % (player_hand6.show_name(), get_handset(player_hand6)))
+    #
+    # print("Current trump is %s" % current_trump)
+    # print("Your handset is %s" % get_handset(player_hand1))
+#
+#     answer = input("select card \n")
+#     if answer.isdigit():
+#         answer = int(answer)
+# #        print(handset1[answer])
+#         selected_card = player_hand1.show_cards()[answer]
+#         print(selected_card)
+#         table.add_card(player_hand1.pop_card(answer), "add")
+#         print(player_hand1.get_hand_len())
+#         print(table.get_table())
+#         print(deck.get_deck_len())
+#     else:
+#         print("Select card by digit")
 
 
 
