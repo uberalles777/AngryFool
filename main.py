@@ -6,18 +6,16 @@ import random
 ranks = range(6, 15)
 suits = ["D", "C", "H", "S"]
 current_trump = ""
-players = 2
+players = ["Player1", "Player2", "Player3"]
 
-def print_rule(rule):
-    rulelib = {
+rulelib = {
         1:"The first move is to do one card or several cards peers.",
         2:"Spades is not trump. Spades hit only spades.",
         3:"The card can only beat by senior in rank suited cards or any trump.",
         4:"Hidden trump is spades, spades can't be trump. Trump has remained the same",
-        5:"Trump has remained the same."
+        5:"Trump has remained the same.",
+        6:'"Trump is changed. Current trump is %s" % current_trump'
     }
-    print(rulelib.get(rule))
-
 
 #Class for playng card
 class Card(object):
@@ -36,6 +34,9 @@ class Hand(object):
     def __init__(self, name):
         self.name = name
         self.cards = []
+
+    def show_name(self):
+        return self.name
 
     def add_card(self,card):
         self.cards.append(card)
@@ -82,8 +83,9 @@ class Table(object):
         self.input_table = []
         self.hited = []
 
-    def add_card(self, card):
-        self.table.append(card)
+    def add_card(self, card, act):
+        if act == "add":
+            self.table.append(card)
 
     def get_table(self):
         return self.table
@@ -92,11 +94,11 @@ class Table(object):
         for sf in self.table:
             for it in self.input_table:
                 if sf.get_rank() > it.get_rank() or sf.get_suit() != it.get_suit():
-                    print_rule(3)
+                    print(rulelib.get(3))
                 elif sf.get_suit() != 'S' and it.get_suit() == 'S':
-                    print_rule(2)
+                    print(rulelib.get(2))
                 elif sf.get_suit() == 'S' and it.get_suit() != 'S':
-                    print_rule(2)
+                    print(rulelib.get(2))
                 elif sf.get_rank() < it.get_rank() and sf.get_suit() == it.get_suit() or sf.get_suit() == current_trump:
                     self.hited.append(self.table.pop(0))
                     self.hited.append(self.input_table.pop(0))
@@ -112,6 +114,10 @@ def new_game():
     table = Table()
     player_hand1 = Hand("Player1")
     player_hand2 = Hand("Player2")
+    player_hand3 = Hand("Player3")
+    player_hand4 = Hand("Player4")
+    player_hand5 = Hand("Player5")
+    player_hand6 = Hand("Player6")
 
     def fill_hand(player):
         global current_trump
@@ -119,10 +125,10 @@ def new_game():
             player.add_card(deck.deal_card())
             if deck.get_deck_len() == 0:
                 if deck.get_hidden_trump().get_suit() == "S":
-                    print_rule(4)
+                    print(rulelib.get(4))
                     break
                 elif deck.get_hidden_trump().get_suit() == current_trump:
-                    print_rule(5)
+                    print(rulelib.get(5))
                     break
                 else:
                     current_trump = deck.get_hidden_trump().get_suit()
@@ -134,8 +140,20 @@ def new_game():
         handset = sorted(handset, key=lambda x: x[0])
         return handset
 
+    print("Current trump is %s" % current_trump)
+
     fill_hand(player_hand1)
+    print("%s  handset is %s" % (player_hand1.show_name(), get_handset(player_hand1)))
     fill_hand(player_hand2)
+    print("%s  handset is %s" % (player_hand2.show_name(), get_handset(player_hand2)))
+    fill_hand(player_hand3)
+    print("%s  handset is %s" % (player_hand3.show_name(), get_handset(player_hand3)))
+    fill_hand(player_hand4)
+    print("%s  handset is %s" % (player_hand4.show_name(), get_handset(player_hand4)))
+    fill_hand(player_hand5)
+    print("%s  handset is %s" % (player_hand5.show_name(), get_handset(player_hand5)))
+    fill_hand(player_hand6)
+    print("%s  handset is %s" % (player_hand6.show_name(), get_handset(player_hand6)))
 
     print("Current trump is %s" % current_trump)
     print("Your handset is %s" % get_handset(player_hand1))
@@ -146,7 +164,7 @@ def new_game():
 #        print(handset1[answer])
         selected_card = player_hand1.show_cards()[answer]
         print(selected_card)
-        table.add_card(player_hand1.pop_card(answer))
+        table.add_card(player_hand1.pop_card(answer), "add")
         print(player_hand1.get_hand_len())
         print(table.get_table())
         print(deck.get_deck_len())
