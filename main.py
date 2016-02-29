@@ -10,12 +10,12 @@ playernames = ["Player1", "Player2", "Player3"]
 players = []
 
 rulelib = {
-        1:"The first move is to do one card or several cards peers.",
-        2:"Spades is not trump. Spades hit only spades.",
-        3:"The card can only beat by senior in rank suited cards or any trump.",
-        4:"Hidden trump is spades, spades can't be trump. Trump has remained the same",
-        5:"Trump has remained the same.",
-        6:'"Trump is changed. Current trump is %s" % current_trump'
+        1: "The first move is to do one card or several cards peers.",
+        2: "Spades is not trump. Spades hit only spades.",
+        3: "The card can only beat by senior in rank suited cards or any trump.",
+        4: "Hidden trump is spades, spades can't be trump. Trump has remained the same",
+        5: "Trump has remained the same.",
+        6: '"Trump is changed. Current trump is %s" % current_trump'
     }
 
 #Class for playng card
@@ -113,9 +113,8 @@ def new_game():
     deck = Deck()
     current_trump = deck.get_trump().get_suit()
     table = Table()
-
-    for h in playernames:
-        players.append(Hand(h))
+    begin_handset = []
+    begin_handset_dict = {}
 
     def fill_hand(player):
         global current_trump
@@ -133,39 +132,40 @@ def new_game():
                     print("Trump is changed. Current trump is %s" % current_trump)
                     break
 
-    def get_handset(player):
-        handset = [(s.get_rank(), s.get_suit()) for s in player.show_cards()]
-        handset = sorted(handset, key=lambda x: x[0])
-        return handset
+    def get_handset(hndst_dict):
+        handset_parsed_dict = {}
+        for plr in hndst_dict:
+            hndst = hndst_dict.get(plr)
+            handset = [(s.get_rank(), s.get_suit()) for s in hndst]
+            handset = sorted(handset, key=lambda x: x[0])
+            hndst_prst = dict.fromkeys([plr], handset)
+            handset_parsed_dict.update(hndst_prst)
+        return handset_parsed_dict
+
+    def find_youger_trump(hndst):
+        for crd in hndst:
+            print(crd)
+            print(hndst.get(crd))
 
     print("Current trump is %s" % current_trump)
 
+    for h in playernames:
+        players.append(Hand(h))
+
     for ghs in players:
         fill_hand(ghs)
-        print(get_handset(ghs))
+        begin_handset.append(ghs.show_cards())
+        ghs_dict = dict.fromkeys([ghs.show_name()], ghs.show_cards())
+        begin_handset_dict.update(ghs_dict)
+
+#    find_youger_trump(begin_handset_dict)
+
+    test = get_handset(begin_handset_dict)
+
+    print(test)
 
 
 
-
-
-
-
-    # fill_hand(player_hand1)
-    # print("%s  handset is %s" % (player_hand1.show_name(), get_handset(player_hand1)))
-    # fill_hand(player_hand2)
-    # print("%s  handset is %s" % (player_hand2.show_name(), get_handset(player_hand2)))
-    # fill_hand(player_hand3)
-    # print("%s  handset is %s" % (player_hand3.show_name(), get_handset(player_hand3)))
-    # fill_hand(player_hand4)
-    # print("%s  handset is %s" % (player_hand4.show_name(), get_handset(player_hand4)))
-    # fill_hand(player_hand5)
-    # print("%s  handset is %s" % (player_hand5.show_name(), get_handset(player_hand5)))
-    # fill_hand(player_hand6)
-    # print("%s  handset is %s" % (player_hand6.show_name(), get_handset(player_hand6)))
-    #
-    # print("Current trump is %s" % current_trump)
-    # print("Your handset is %s" % get_handset(player_hand1))
-#
 #     answer = input("select card \n")
 #     if answer.isdigit():
 #         answer = int(answer)
