@@ -192,43 +192,25 @@ def new_game():
                 cardlist.append(card)
         return cardlist
 
+    def select_youger(hndst):
+        rnklst = []
+        for card in hndst:
+            rnk = int(card[0][1:])
+            rnklst.append(rnk)
+        try:
+            min_rank = min(rnklst)
+        except:
+            min_rank = None
+            return min_rank
+        card_index = rnklst.index(min_rank)
+        younger = hndst[card_index]
+        return younger
+
     test_cardlist_suited = select_by_suit(test_handset, current_trump)
     test_cardlist_ranked = select_by_rank(test_handset, 6)
-    print(test_cardlist_suited)
-    print(test_cardlist_ranked)
-
-    # def find_youger_trump(hndst):
-    #     for plr in hndst:
-    #         # print(plr)
-    #         # print(hndst.get(plr))
-    #         crdst = hndst.get(plr)
-    #         trumplist = []
-    #         for crd in crdst:
-    #             name = crd[0]
-    #             if name[0] == current_trump:
-    #                 trumplist.append(name)
-    #
-    #         print(trumplist)
-    #         if trumplist[0]:
-    #             i = 0
-    #             nmin = i
-    #             min = trumplist[nmin]
-    #             while i < len(trumplist):
-    #                 break
-
-
-
-
-
-
-            # print(rank)
-
-
-    # find_youger_trump(begin_handset_dict)
-
-    # test = get_handset(begin_handset_dict)
-
-    # print(test)
+    # print(test_cardlist_suited)
+    print(select_youger(test_cardlist_suited))
+#    print(test_cardlist_ranked)
 
 
 
