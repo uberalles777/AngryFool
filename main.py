@@ -30,30 +30,13 @@ class Card(object):
     def get_suit(self):
         return self.suit
 
-#Class for player
-class Hand(object):
-    def __init__(self, name):
-        self.name = name
-        self.cards = []
+    def get_name(self):
+        name = self.suit + str(self.rank)
+        return name
 
-    def show_name(self):
-        return self.name
-
-    def add_card(self,card):
-        self.cards.append(card)
-
-    def pop_card(self,card):
-        self.cards.pop(card)
-
-    def show_cards(self):
-        return self.cards
-
-    def get_hand_len(self):
-        return len(self.cards)
 
 #Class for playng deck. It contains the playing cards and two trumps.
 class Deck(object):
-
     def __init__(self):
         self.cards = [Card(r, s) for r in ranks for s in suits]
         random.shuffle(self.cards)
@@ -75,6 +58,28 @@ class Deck(object):
         return self.cards.pop()
 
     def get_deck_len(self):
+        return len(self.cards)
+
+#Class for player
+class Hand(object):
+    def __init__(self, name):
+        self.name = name
+        self.cards = []
+
+    def show_name(self):
+        return self.name
+
+    def add_card(self,card):
+        namedcard = [card.get_name(), card]
+        self.cards.append(namedcard)
+
+    def pop_card(self,card):
+        self.cards.pop(card)
+
+    def show_cards(self):
+        return self.cards
+
+    def get_hand_len(self):
         return len(self.cards)
 
 #Class for playng table.
@@ -142,12 +147,19 @@ def new_game():
             handset_parsed_dict.update(hndst_prst)
         return handset_parsed_dict
 
-    def find_youger_trump(hndst):
-        for crd in hndst:
-            print(crd)
-            print(hndst.get(crd))
+
+
 
     print("Current trump is %s" % current_trump)
+
+
+
+    # test_player = Hand("Test")
+    # print(deck.deal_card().get_name())
+    # print(deck.get_deck_len())
+    # print(deck.get_trump().get_name())
+    # print(deck.get_hidden_trump().get_name())
+
 
     for h in playernames:
         players.append(Hand(h))
@@ -158,11 +170,65 @@ def new_game():
         ghs_dict = dict.fromkeys([ghs.show_name()], ghs.show_cards())
         begin_handset_dict.update(ghs_dict)
 
-#    find_youger_trump(begin_handset_dict)
+    # print(begin_handset_dict)
 
-    test = get_handset(begin_handset_dict)
+    test_handset = begin_handset_dict.get(playernames[0])
 
-    print(test)
+    print(test_handset)
+
+    def select_by_suit(hndst, st):
+        cardlist = []
+        for card in hndst:
+            name = card[0]
+            if name[0] == st:
+                cardlist.append(card)
+        return cardlist
+
+    def select_by_rank(hndst, rnk):
+        cardlist = []
+        for card in hndst:
+            rank = int(card[0][1:])
+            if rank == rnk:
+                cardlist.append(card)
+        return cardlist
+
+    test_cardlist_suited = select_by_suit(test_handset, current_trump)
+    test_cardlist_ranked = select_by_rank(test_handset, 6)
+    print(test_cardlist_suited)
+    print(test_cardlist_ranked)
+
+    # def find_youger_trump(hndst):
+    #     for plr in hndst:
+    #         # print(plr)
+    #         # print(hndst.get(plr))
+    #         crdst = hndst.get(plr)
+    #         trumplist = []
+    #         for crd in crdst:
+    #             name = crd[0]
+    #             if name[0] == current_trump:
+    #                 trumplist.append(name)
+    #
+    #         print(trumplist)
+    #         if trumplist[0]:
+    #             i = 0
+    #             nmin = i
+    #             min = trumplist[nmin]
+    #             while i < len(trumplist):
+    #                 break
+
+
+
+
+
+
+            # print(rank)
+
+
+    # find_youger_trump(begin_handset_dict)
+
+    # test = get_handset(begin_handset_dict)
+
+    # print(test)
 
 
 
