@@ -172,9 +172,7 @@ def new_game():
 
     # print(begin_handset_dict)
 
-    test_handset = begin_handset_dict.get(playernames[0])
-
-    print(test_handset)
+    # test_handset = begin_handset_dict.get(playernames[0])
 
     def select_by_suit(hndst, st):
         cardlist = []
@@ -200,16 +198,43 @@ def new_game():
         try:
             min_rank = min(rnklst)
         except:
-            min_rank = None
-            return min_rank
+            return None
         card_index = rnklst.index(min_rank)
         younger = hndst[card_index]
         return younger
 
-    test_cardlist_suited = select_by_suit(test_handset, current_trump)
-    test_cardlist_ranked = select_by_rank(test_handset, 6)
+    def first_turn(hndst_dct):
+        # print(hndst_dct)
+        first = {}
+        values = []
+        plrs = []
+        first_gamer = ""
+
+        for player in hndst_dct:
+            trumps = select_by_suit(hndst_dct.get(player), current_trump)
+            younger_trump = select_youger(trumps)
+            yng_dct = dict.fromkeys([player], younger_trump)
+            first.update(yng_dct)
+
+        print(first)
+
+        for plr in first:
+            if first.get(plr):
+                plrs.append(plr)
+                val = int(first.get(plr)[0][1:])
+                values.append(val)
+                minval = min(values)
+                index = values.index(minval)
+        first_gamer = plrs[index]
+        return first_gamer
+
+    first_turner = first_turn(begin_handset_dict)
+    print(first_turner)
+
+    # test_cardlist_suited = select_by_suit(test_handset, current_trump)
+    # test_cardlist_ranked = select_by_rank(test_handset, 6)
     # print(test_cardlist_suited)
-    print(select_youger(test_cardlist_suited))
+    # print(select_youger(test_cardlist_suited))
 #    print(test_cardlist_ranked)
 
 
