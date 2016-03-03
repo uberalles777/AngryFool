@@ -6,7 +6,7 @@ import random
 ranks = range(6, 15)
 suits = ["D", "C", "H", "S"]
 current_trump = ""
-playernames = ["Player1", "Player2", "Player3"]
+playernames = ["Player1", "Player2", "Player3", "Player4"]
 players = []
 
 rulelib = {
@@ -208,15 +208,12 @@ def new_game():
         first = {}
         values = []
         plrs = []
-        first_gamer = ""
 
         for player in hndst_dct:
             trumps = select_by_suit(hndst_dct.get(player), current_trump)
             younger_trump = select_youger(trumps)
             yng_dct = dict.fromkeys([player], younger_trump)
             first.update(yng_dct)
-
-        print(first)
 
         for plr in first:
             if first.get(plr):
@@ -230,14 +227,6 @@ def new_game():
 
     first_turner = first_turn(begin_handset_dict)
     print(first_turner)
-
-    # test_cardlist_suited = select_by_suit(test_handset, current_trump)
-    # test_cardlist_ranked = select_by_rank(test_handset, 6)
-    # print(test_cardlist_suited)
-    # print(select_youger(test_cardlist_suited))
-#    print(test_cardlist_ranked)
-
-
 
 #     answer = input("select card \n")
 #     if answer.isdigit():
