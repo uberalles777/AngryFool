@@ -15,14 +15,17 @@ rulelib = {
         3: "The card can only beat by senior in rank suited cards or any trump.",
         4: "Hidden trump is spades, spades can't be trump. Trump has remained the same",
         5: "Trump has remained the same.",
-        6: '"Trump is changed. Current trump is %s" % current_trump'
+        6: '"Trump is changed. Current trump is %s" % current_trump',
+        7: "Add yourself card is prohibited. Only other players can add cards on the table."
     }
 
 #Class for playng card
 class Card(object):
     def __init__(self, rank, suit):
-         self.rank = rank
-         self.suit = suit
+        self.rank = rank
+        self.suit = suit
+        self.bit_by = ""
+        self.status = "Free"
 
     def get_rank(self):
         return self.rank
@@ -34,6 +37,48 @@ class Card(object):
         name = self.suit + str(self.rank)
         return name
 
+    def set_status(self, status):
+        self.status = status
+
+    def get_status(self):
+        return self.status
+
+    def bit_card(self,card):
+        if card.get_rank() > self.rank:
+            if card.get_suit() == self.suit:
+                self.bit_by = card
+                self.status = "Slave"
+                card.set_status("Master")
+                return True
+            elif (self.suit == "S" and card.get_suit() != "S") or (self.suit != "S" and card.get_suit() == "S"):
+                print(rulelib.get(2))
+                return False
+            elif card.get_suit() == current_trump:
+                self.bit_by = card
+                self.status = "Slave"
+                card.set_status("Master")
+                return True
+        elif card.get_rank() == self.rank:
+            print(rulelib(7))
+            return False
+        else:
+            if card.get_suit() == current_trump:
+                self.bit_by = card
+                self.status = "Slave"
+                card.set_status("Master")
+                return True
+            elif (self.suit == "S" and card.get_suit() != "S") or (self.suit != "S" and card.get_suit() == "S"):
+                print(rulelib.get(2))
+                return False
+            else:
+                print(rulelib(3))
+                return False
+
+    def clear(self):
+        card = self.bit_by
+        self.status = "Free"
+        card.set_status("Free")
+        self.bit_by = ""
 
 #Class for playng deck. It contains the playing cards and two trumps.
 class Deck(object):
@@ -96,19 +141,6 @@ class Table(object):
     def get_table(self):
         return self.table
 
-    def bit_card(self):
-        for sf in self.table:
-            for it in self.input_table:
-                if sf.get_rank() > it.get_rank() or sf.get_suit() != it.get_suit():
-                    print(rulelib.get(3))
-                elif sf.get_suit() != 'S' and it.get_suit() == 'S':
-                    print(rulelib.get(2))
-                elif sf.get_suit() == 'S' and it.get_suit() != 'S':
-                    print(rulelib.get(2))
-                elif sf.get_rank() < it.get_rank() and sf.get_suit() == it.get_suit() or sf.get_suit() == current_trump:
-                    self.hited.append(self.table.pop(0))
-                    self.hited.append(self.input_table.pop(0))
-
     def clear_table(self):
         self.table.clear()
 
@@ -118,6 +150,7 @@ def new_game():
     deck = Deck()
     current_trump = deck.get_trump().get_suit()
     table = Table()
+    players_dict = {}
     begin_handset = []
     begin_handset_dict = {}
 
@@ -147,19 +180,7 @@ def new_game():
             handset_parsed_dict.update(hndst_prst)
         return handset_parsed_dict
 
-
-
-
     print("Current trump is %s" % current_trump)
-
-
-
-    # test_player = Hand("Test")
-    # print(deck.deal_card().get_name())
-    # print(deck.get_deck_len())
-    # print(deck.get_trump().get_name())
-    # print(deck.get_hidden_trump().get_name())
-
 
     for h in playernames:
         players.append(Hand(h))
@@ -169,6 +190,8 @@ def new_game():
         begin_handset.append(ghs.show_cards())
         ghs_dict = dict.fromkeys([ghs.show_name()], ghs.show_cards())
         begin_handset_dict.update(ghs_dict)
+        plrs_dict = dict.fromkeys([ghs.show_name()], ghs)
+        players_dict.update(plrs_dict)
 
     # print(begin_handset_dict)
 
@@ -225,8 +248,20 @@ def new_game():
         first_gamer = plrs[index]
         return first_gamer
 
+    def f2f(plrlst, plr):
+        index = plrlst.index(plr)
+        while index:
+            plrlst.append(plrlst.pop(0))
+            index = plrlst.index(plr)
+
     first_turner = first_turn(begin_handset_dict)
+    f2f(playernames, first_turner)
     print(first_turner)
+    print(playernames)
+    print(players_dict)
+
+    for plr in playernames:
+        print(players_dict.get(plr))
 
 #     answer = input("select card \n")
 #     if answer.isdigit():
