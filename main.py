@@ -75,9 +75,7 @@ class Card(object):
                 return False
 
     def clear(self):
-        card = self.bit_by
         self.status = "Free"
-        card.set_status("Free")
         self.bit_by = ""
 
 #Class for playng deck. It contains the playing cards and two trumps.
