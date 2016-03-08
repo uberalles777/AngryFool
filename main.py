@@ -43,38 +43,7 @@ class Card(object):
     def get_status(self):
         return self.status
 
-    def bit_card(self,card):
-        if card.get_rank() > self.rank:
-            if card.get_suit() == self.suit:
-                self.bit_by = card
-                self.status = "Slave"
-                card.set_status("Master")
-                return True
-            elif (self.suit == "S" and card.get_suit() != "S") or (self.suit != "S" and card.get_suit() == "S"):
-                print(rulelib.get(2))
-                return False
-            elif card.get_suit() == current_trump:
-                self.bit_by = card
-                self.status = "Slave"
-                card.set_status("Master")
-                return True
-        elif card.get_rank() == self.rank:
-            print(rulelib(7))
-            return False
-        else:
-            if card.get_suit() == current_trump:
-                self.bit_by = card
-                self.status = "Slave"
-                card.set_status("Master")
-                return True
-            elif (self.suit == "S" and card.get_suit() != "S") or (self.suit != "S" and card.get_suit() == "S"):
-                print(rulelib.get(2))
-                return False
-            else:
-                print(rulelib(3))
-                return False
-
-    def clear(self):
+    def clear_status(self):
         self.status = "Free"
         self.bit_by = ""
 
@@ -128,6 +97,7 @@ class Hand(object):
 #Class for playng table.
 class Table(object):
     def __init__(self):
+        self.turn_status = ""
         self.table = []
         self.input_table = []
         self.hited = []
@@ -135,12 +105,46 @@ class Table(object):
     def add_card(self, card, act):
         if act == "add":
             self.table.append(card)
+        elif act == "bit":
+            self.input_table(card)
 
     def get_table(self):
         return self.table
 
     def clear_table(self):
         self.table.clear()
+
+    def bit_card(self):
+        def bf(c_bot, c_top):
+            if c_bot.get_rank() > c_top.get_rank():
+                if c_bot.get_suit() == c_top.get_suit():
+                    c_bot.set_status("Slave")
+                    c_top.set_status("Master")
+                elif (c_bot.get_suit() == "S" and c_top.get_suit() != "S") or (c_bot.get_suit() != "S" and c_top.get_suit() == "S"):
+                    print(rulelib.get(2))
+                elif c_top.get_suit() == current_trump:
+                    c_bot.set_status("Slave")
+                    c_top.set_status("Master")
+            elif c_bot.get_rank() == c_top.get_rank():
+                print(rulelib(7))
+            else:
+                if c_top.get_suit() == current_trump:
+                    c_bot.set_status("Slave")
+                    c_top.set_status("Master")
+                elif (c_bot.get_suit() == "S" and c_top.get_suit() != "S") or (c_bot.get_suit() != "S" and c_top.get_suit() == "S"):
+                    print(rulelib.get(2))
+                else:
+                    print(rulelib(3))
+
+        if len(self.table) == len(self.input_table):
+            for crd_bot in self.table:
+                if crd_bot.get_status() == "Free":
+                    for crd_top in self.input_table:
+                        if crd_top.get.status == "Free":
+                            bf(crd_bot, crd_top)
+
+
+
 
 #Main game function. Provides gameplay.
 def new_game():
