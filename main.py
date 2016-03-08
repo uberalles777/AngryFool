@@ -143,6 +143,14 @@ class Table(object):
                         if crd_top.get.status == "Free":
                             bf(crd_bot, crd_top)
 
+    def get_avaiable_ranks(self):
+        rnks = set()
+        for crd in self.table:
+            rnks.add(int(crd.get_rank()))
+        for crd in self.input_table:
+            rnks.add(int(crd.get_rank()))
+        ranks = list(rnks)
+        return ranks
 
 
 
@@ -264,6 +272,8 @@ def new_game():
 
     for plr in playernames:
         print(players_dict.get(plr))
+
+    print(table.get_avaiable_ranks())
 
 #     answer = input("select card \n")
 #     if answer.isdigit():
