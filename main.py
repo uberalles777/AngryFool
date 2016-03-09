@@ -195,22 +195,27 @@ def new_game():
     for h in playernames:
         players.append(Hand(h))
 
+    print(players)
+
     for ghs in players:
+        # print(ghs)
         fill_hand(ghs)
         begin_handset.append(ghs.show_cards())
+        print(begin_handset)
         ghs_dict = dict.fromkeys([ghs.show_name()], ghs.show_cards())
         begin_handset_dict.update(ghs_dict)
         plrs_dict = dict.fromkeys([ghs.show_name()], ghs)
         players_dict.update(plrs_dict)
 
-    # print(begin_handset_dict)
+    print(begin_handset_dict)
 
-    # test_handset = begin_handset_dict.get(playernames[0])
+    test_handset = begin_handset_dict.get(playernames[0])
+    print(test_handset)
 
     def select_by_suit(hndst, st):
         cardlist = []
         for card in hndst:
-            name = card[0]
+            name = card.get_name()
             if name[0] == st:
                 cardlist.append(card)
         return cardlist
@@ -218,7 +223,7 @@ def new_game():
     def select_by_rank(hndst, rnk):
         cardlist = []
         for card in hndst:
-            rank = int(card[0][1:])
+            rank = int(card.get_name()[1:])
             if rank == rnk:
                 cardlist.append(card)
         return cardlist
@@ -226,7 +231,7 @@ def new_game():
     def select_youger(hndst):
         rnklst = []
         for card in hndst:
-            rnk = int(card[0][1:])
+            rnk = int(card.get_name()[1:])
             rnklst.append(rnk)
         try:
             min_rank = min(rnklst)
@@ -271,7 +276,7 @@ def new_game():
     print(players_dict)
 
     for plr in playernames:
-        print(players_dict.get(plr))
+        print(players_dict.get(plr).show_cards())
 
     print(table.get_avaiable_ranks())
 
