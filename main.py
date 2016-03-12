@@ -82,8 +82,8 @@ class Hand(object):
         return self.name
 
     def add_card(self,card):
-        namedcard = [card.get_name(), card]
-        self.cards.append(namedcard)
+        # namedcard = [card.get_name(), card]
+        self.cards.append(card)
 
     def pop_card(self,card):
         self.cards.pop(card)
@@ -195,26 +195,28 @@ def new_game():
     for h in playernames:
         players.append(Hand(h))
 
-    print(players)
+    # print(players)
 
     for ghs in players:
         # print(ghs)
         fill_hand(ghs)
         begin_handset.append(ghs.show_cards())
-        print(begin_handset)
+        # print(begin_handset)
+        # print(ghs.show_cards())
         ghs_dict = dict.fromkeys([ghs.show_name()], ghs.show_cards())
         begin_handset_dict.update(ghs_dict)
         plrs_dict = dict.fromkeys([ghs.show_name()], ghs)
         players_dict.update(plrs_dict)
 
-    print(begin_handset_dict)
+    # print(begin_handset_dict)
 
     test_handset = begin_handset_dict.get(playernames[0])
-    print(test_handset)
+    # print(test_handset)
 
     def select_by_suit(hndst, st):
         cardlist = []
         for card in hndst:
+            # print(card)
             name = card.get_name()
             if name[0] == st:
                 cardlist.append(card)
@@ -256,7 +258,8 @@ def new_game():
         for plr in first:
             if first.get(plr):
                 plrs.append(plr)
-                val = int(first.get(plr)[0][1:])
+                # print(first.get(plr))
+                val = int(first.get(plr).get_rank())
                 values.append(val)
                 minval = min(values)
                 index = values.index(minval)
@@ -279,6 +282,11 @@ def new_game():
         print(players_dict.get(plr).show_cards())
 
     print(table.get_avaiable_ranks())
+
+
+
+
+
 
 #     answer = input("select card \n")
 #     if answer.isdigit():
