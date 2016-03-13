@@ -77,6 +77,13 @@ class Hand(object):
     def __init__(self, name):
         self.name = name
         self.cards = []
+        self.table = []
+
+    def add_table(self,tabel):
+        self.table.append(tabel)
+
+    def pop_table(self, tabel):
+        self.table.pop()
 
     def show_name(self):
         return self.name
@@ -274,17 +281,25 @@ def new_game():
 
     first_turner = first_turn(begin_handset_dict)
     f2f(playernames, first_turner)
+    next_turner = playernames[1]
     print(first_turner)
-    print(playernames)
+    first_hand = players_dict.get(first_turner)
+    first_hand.add_table(table)
+    print(next_turner)
+    # print(playernames)
     print(players_dict)
 
-    for plr in playernames:
-        print(players_dict.get(plr).show_cards())
+    # for plr in playernames:
+    #     print(players_dict.get(plr).show_cards())
 
     print(table.get_avaiable_ranks())
+    print(table.__dict__.keys())
 
-
-
+    # i = 8
+    # while i > 0:
+    #
+    #     i -= 1
+    #     print(i)
 
 
 
